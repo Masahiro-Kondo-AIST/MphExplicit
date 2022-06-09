@@ -60,12 +60,17 @@ and they can be visualized with a viewer like ParaView.
 # Using openMP and openACC
 In compling with openMP or openACC, edit make file to switch the compliers
 and its options. 
+
 For using openMP apply
+```
  CC = g++
  CFLAGS  = -O3 -fopenmp 
+```
 For using openACC apply
+```
  CC = pgc++
  CFLAGS    =  -acc -O3 -Minfo=accel 
+```
 The solver program has only been tested with 
    g++ 7.5.0.   and   NVIDIA HPC-SDK 20.9
 So, they are recomended though compatible versions may work. 
