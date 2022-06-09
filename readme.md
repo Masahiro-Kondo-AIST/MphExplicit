@@ -22,13 +22,13 @@ This program is for conducting particle based fluid simulation
 using MPH-WC (Moving Particle Hydrodynamics for Weakly Compressible) method. 
 ```
 
------- Directories ------
+# Directories
 The directories in the repository is as follows:  
-
+```
 MphExplicit ---- generator
             |--- results
             |--- source
-           
+```          
 
 # How to execute samples
 (1)"generator" is for pre-process. To compile it, run
