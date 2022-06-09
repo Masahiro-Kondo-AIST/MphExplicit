@@ -31,23 +31,25 @@ MphExplicit ---- generator
 ```          
 
 # How to execute samples
-(1)"generator" is for pre-process. To compile it, run
-> make 
+1. "generator" is for pre-process. To compile it, run
+` > make ` 
 in generator directory. (g++ is to be installed)
 
-(2)"results" contains sample cases for the calculation. 
+2. "results" contains sample cases for the calculation. 
 In a case directory, execute
-> ./generate.sh
+`  >./generate.sh` 
 The generator will be launched and particles will be generated
 reading cubolid file (*.boid).
 
-(3)"source" contains the main solver for MPH-WC calculations. 
+3. "source" contains the main solver for MPH-WC calculations. 
 To complie it, run
-> make 
+` > make ` 
+
 in the source directory. 
 
-(4)Then, back to the case directory, and launch
-> ./execute.sh
+4. Then, back to the case directory, and launch
+` > ./execute.sh` 
+
 The solver starts with reading parameter file (*.data) 
 and particle file (*.grid). 
 The series of calculation results (*.vtk) are output,  
@@ -76,10 +78,10 @@ For distribution including shape other than cuboid, particles
 are to be generated in other way such as making a new program for it.   
   
 In the main solver, the particle types are defined as
- 0: fluid 
- 1: fluid
- 2: wall
- 3: wall
+- 0: fluid 
+- 1: fluid
+- 2: wall
+- 3: wall
 Therefore, 2 fluid types and 2 wall types can be used in the solver. 
 To change tne number of types, the main solver is to be modified. 
 
