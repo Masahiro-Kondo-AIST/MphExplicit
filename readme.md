@@ -32,23 +32,31 @@ MphExplicit ---- generator
 
 # How to execute samples
 1. "generator" is for pre-process. To compile it, run
-` > make ` 
+```
+> make 
+```
 in generator directory. (g++ is to be installed)
 
 2. "results" contains sample cases for the calculation. 
 In a case directory, execute
-`  >./generate.sh` 
+```
+>./generate.sh
+```
 The generator will be launched and particles will be generated
 reading cubolid file (*.boid).
 
 3. "source" contains the main solver for MPH-WC calculations. 
 To complie it, run
-` > make ` 
+```
+> make 
+```
 
 in the source directory. 
 
 4. Then, back to the case directory, and launch
-` > ./execute.sh` 
+```
+> ./execute.sh
+```
 
 The solver starts with reading parameter file (*.data) 
 and particle file (*.grid). 
