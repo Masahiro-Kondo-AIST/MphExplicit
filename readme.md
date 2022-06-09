@@ -82,6 +82,7 @@ In the main solver, the particle types are defined as
 - 1: fluid
 - 2: wall
 - 3: wall
+
 Therefore, 2 fluid types and 2 wall types can be used in the solver. 
 To change tne number of types, the main solver is to be modified. 
 
