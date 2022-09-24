@@ -94,7 +94,7 @@ static int PowerParticleCount;
 static int ParticleCountPower;                   
 static double CellWidth = 0.0;
 static int CellCount[DIM];
-static int CellCounts = 0.0;
+static int CellCounts = 0;
 static int *CellParticleBegin;  // beginning of particles in the cell
 static int *CellParticleEnd;    // number of particles in the cell
 static int *CellIndex;  // [ParticleCountPower>>1]
@@ -315,19 +315,14 @@ int main(int argc, char *argv[])
     initializeWall();
     initializeDomain();
 
-	#pragma acc enter data create(ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
-	#pragma acc enter data create(ParticleCount,Property[0:ParticleCount],Mass[0:ParticleCount],Position[0:ParticleCount][0:DIM],Velocity[0:ParticleCount][0:DIM])
-	#pragma acc enter data create(Density[0:TYPE_COUNT],BulkModulus[0:TYPE_COUNT],BulkViscosity[0:TYPE_COUNT],ShearViscosity[0:TYPE_COUNT],SurfaceTension[0:TYPE_COUNT])
-	#pragma acc enter data create(CofA[0:TYPE_COUNT],CofK,InteractionRatio[0:TYPE_COUNT][0:TYPE_COUNT])
-	#pragma acc enter data create(Mu[0:ParticleCount],Lambda[0:ParticleCount],Kappa[0:ParticleCount],Gravity[0:DIM])
-	#pragma acc enter data create(MaxRadius,RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
-	#pragma acc enter data create(WallCenter[0:WALL_END][0:DIM],WallVelocity[0:WALL_END][0:DIM],WallOmega[0:WALL_END][0:DIM],WallRotation[0:WALL_END][0:DIM][0:DIM])
-	#pragma acc enter data create(PowerParticleCount,ParticleCountPower,CellWidth,CellCount[0:DIM],CellParticleBegin[0:CellCounts],CellParticleEnd[0:CellCounts])
-	#pragma acc enter data create(CellIndex[0:PowerParticleCount],CellParticle[0:PowerParticleCount])
-	#pragma acc enter data create(Force[0:ParticleCount][0:DIM],NeighborCount[0:ParticleCount],Neighbor[0:ParticleCount][0:MAX_NEIGHBOR_COUNT],NeighborCalculatedPosition[0:ParticleCount][0:DIM])
-	#pragma acc enter data create(DensityA[0:ParticleCount],GravityCenter[0:ParticleCount][0:DIM],PressureA[0:ParticleCount])
-	#pragma acc enter data create(VolStrainP[0:ParticleCount],DivergenceP[0:ParticleCount],PressureP[0:ParticleCount])
-	#pragma acc enter data create(VirialPressureAtParticle[0:ParticleCount],VirialStressAtParticle[0:ParticleCount][0:DIM][0:DIM])
+//	#pragma acc enter data create(MaxRadius,RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
+//	#pragma acc enter data create(WallCenter[0:WALL_END][0:DIM],WallVelocity[0:WALL_END][0:DIM],WallOmega[0:WALL_END][0:DIM],WallRotation[0:WALL_END][0:DIM][0:DIM])
+//	#pragma acc enter data create(PowerParticleCount,ParticleCountPower,CellWidth,CellCount[0:DIM],CellParticleBegin[0:CellCounts],CellParticleEnd[0:CellCounts])
+//	#pragma acc enter data create(CellIndex[0:PowerParticleCount],CellParticle[0:PowerParticleCount])
+//	#pragma acc enter data create(Force[0:ParticleCount][0:DIM],NeighborCount[0:ParticleCount],Neighbor[0:ParticleCount][0:MAX_NEIGHBOR_COUNT],NeighborCalculatedPosition[0:ParticleCount][0:DIM])
+//	#pragma acc enter data create(DensityA[0:ParticleCount],GravityCenter[0:ParticleCount][0:DIM],PressureA[0:ParticleCount])
+//	#pragma acc enter data create(VolStrainP[0:ParticleCount],DivergenceP[0:ParticleCount],PressureP[0:ParticleCount])
+//	#pragma acc enter data create(VirialPressureAtParticle[0:ParticleCount],VirialStressAtParticle[0:ParticleCount][0:DIM][0:DIM])
 	
 	// data transfer from host to device
 	#pragma acc update device(ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
@@ -435,20 +430,6 @@ int main(int argc, char *argv[])
 	}
 	cEnd = cTill;
 	
-	#pragma acc exit data delete(ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
-	#pragma acc exit data delete(ParticleCount,Property[0:ParticleCount],Mass[0:ParticleCount],Position[0:ParticleCount][0:DIM],Velocity[0:ParticleCount][0:DIM])
-	#pragma acc exit data delete(Density[0:TYPE_COUNT],BulkModulus[0:TYPE_COUNT],BulkViscosity[0:TYPE_COUNT],ShearViscosity[0:TYPE_COUNT],SurfaceTension[0:TYPE_COUNT])
-	#pragma acc exit data delete(CofA[0:TYPE_COUNT],CofK,InteractionRatio[0:TYPE_COUNT][0:TYPE_COUNT])
-	#pragma acc exit data delete(Mu[0:ParticleCount],Lambda[0:ParticleCount],Kappa[0:ParticleCount],Gravity[0:DIM])
-	#pragma acc exit data delete(MaxRadius,RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
-	#pragma acc exit data delete(WallCenter[0:WALL_END][0:DIM],WallVelocity[0:WALL_END][0:DIM],WallOmega[0:WALL_END][0:DIM],WallRotation[0:WALL_END][0:DIM][0:DIM])
-	#pragma acc exit data delete(PowerParticleCount,ParticleCountPower,CellWidth,CellCount[0:DIM],CellParticleBegin[0:CellCounts],CellParticleEnd[0:CellCounts])
-	#pragma acc exit data delete(CellIndex[0:PowerParticleCount],CellParticle[0:PowerParticleCount])
-	#pragma acc exit data delete(Force[0:ParticleCount][0:DIM],NeighborCount[0:ParticleCount],Neighbor[0:ParticleCount][0:MAX_NEIGHBOR_COUNT],NeighborCalculatedPosition[0:ParticleCount][0:DIM])
-	#pragma acc exit data delete(DensityA[0:ParticleCount],GravityCenter[0:ParticleCount][0:DIM],PressureA[0:ParticleCount])
-	#pragma acc exit data delete(VolStrainP[0:ParticleCount],DivergenceP[0:ParticleCount],PressureP[0:ParticleCount])
-	#pragma acc exit data delete(VirialPressureAtParticle[0:ParticleCount],VirialStressAtParticle[0:ParticleCount][0:DIM][0:DIM])
-	
 	{
 		time_t t=time(NULL);
 		log_printf("end main roop at %s\n",ctime(&t));
@@ -459,6 +440,23 @@ int main(int argc, char *argv[])
 		log_printf("total:                   %lf [CPU sec]\n", (double)(cNeigh+cExplicit+cVirial+cOther)/CLOCKS_PER_SEC);
 		log_printf("total (check):           %lf [CPU sec]\n", (double)(cEnd-cStart)/CLOCKS_PER_SEC);
 	}
+	
+	
+	#pragma acc exit data delete(ParticleCount,ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
+	#pragma acc exit data delete(Property[0:ParticleCount],Mass[0:ParticleCount],Position[0:ParticleCount][0:DIM],Velocity[0:ParticleCount][0:DIM])
+	#pragma acc exit data delete(Density[0:TYPE_COUNT],BulkModulus[0:TYPE_COUNT],BulkViscosity[0:TYPE_COUNT],ShearViscosity[0:TYPE_COUNT],SurfaceTension[0:TYPE_COUNT])
+	#pragma acc exit data delete(CofA[0:TYPE_COUNT],CofK,InteractionRatio[0:TYPE_COUNT][0:TYPE_COUNT])
+	#pragma acc exit data delete(Mu[0:ParticleCount],Lambda[0:ParticleCount],Kappa[0:ParticleCount],Gravity[0:DIM])
+	#pragma acc exit data delete(MaxRadius,RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
+//	#pragma acc exit data delete(FluidParticleBegin,FluidParticleEnd,WallParticleBegin,WallParticleEnd)
+	#pragma acc exit data delete(WallCenter[0:WALL_END][0:DIM],WallVelocity[0:WALL_END][0:DIM],WallOmega[0:WALL_END][0:DIM],WallRotation[0:WALL_END][0:DIM][0:DIM])
+	#pragma acc exit data delete(PowerParticleCount,ParticleCountPower,CellWidth,CellCount[0:DIM])
+	#pragma acc exit data delete(CellParticleBegin[0:CellCounts],CellParticleEnd[0:CellCounts])
+	#pragma acc exit data delete(CellIndex[0:PowerParticleCount],CellParticle[0:PowerParticleCount])
+	#pragma acc exit data delete(Force[0:ParticleCount][0:DIM],NeighborCount[0:ParticleCount],Neighbor[0:ParticleCount][0:MAX_NEIGHBOR_COUNT],NeighborCalculatedPosition[0:ParticleCount][0:DIM])
+	#pragma acc exit data delete(DensityA[0:ParticleCount],GravityCenter[0:ParticleCount][0:DIM],PressureA[0:ParticleCount])
+	#pragma acc exit data delete(VolStrainP[0:ParticleCount],DivergenceP[0:ParticleCount],PressureP[0:ParticleCount])
+	#pragma acc exit data delete(VirialPressureAtParticle[0:ParticleCount],VirialStressAtParticle[0:ParticleCount][0:DIM][0:DIM])
 	
 	return 0;
 	
@@ -503,82 +501,120 @@ static void readDataFile(char *filename)
         }
     }
     fclose(fp);
-    return;
+	
+	#pragma acc enter data create(ParticleCount,ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
+	#pragma acc enter data create(MaxRadius,RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
+	#pragma acc enter data create(Density[0:TYPE_COUNT],BulkModulus[0:TYPE_COUNT],BulkViscosity[0:TYPE_COUNT],ShearViscosity[0:TYPE_COUNT],SurfaceTension[0:TYPE_COUNT])
+	#pragma acc enter data create(CofA[0:TYPE_COUNT],CofK,InteractionRatio[0:TYPE_COUNT][0:TYPE_COUNT])
+	#pragma acc enter data create(Gravity[0:DIM])
+//	#pragma acc enter data create(FluidParticleBegin,FluidParticleEnd,WallParticleBegin,WallParticleEnd)
+	#pragma acc enter data create(PowerParticleCount,ParticleCountPower,CellWidth,CellCount[0:DIM])
+	#pragma acc enter data create(WallCenter[0:WALL_END][0:DIM],WallVelocity[0:WALL_END][0:DIM],WallOmega[0:WALL_END][0:DIM])
+	#pragma acc enter data create(WallRotation[0:WALL_END][0:DIM][0:DIM])
+	
 }
 
 static void readGridFile(char *filename)
 {
     FILE *fp=fopen(filename,"r");
-    char buf[1024];   
-
-    try{
-        if(fgets(buf,sizeof(buf),fp)==NULL)throw;
-        sscanf(buf,"%lf",&Time);
-        if(fgets(buf,sizeof(buf),fp)==NULL)throw;
-        sscanf(buf,"%d  %lf  %lf %lf %lf  %lf %lf %lf",
-               &ParticleCount,
-               &ParticleSpacing,
-               &DomainMin[0], &DomainMax[0],
-               &DomainMin[1], &DomainMax[1],
-               &DomainMin[2], &DomainMax[2]);
-#ifdef TWO_DIMENSIONAL
-        ParticleVolume = ParticleSpacing*ParticleSpacing;
-#else
-	ParticleVolume = ParticleSpacing*ParticleSpacing*ParticleSpacing;
-#endif
-
-        Property = (int *)malloc(ParticleCount*sizeof(int));
-        Position = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
-        Velocity = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
-        DensityA = (double *)malloc(ParticleCount*sizeof(double));
-        GravityCenter = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
-        PressureA = (double *)malloc(ParticleCount*sizeof(double));
-        VolStrainP = (double *)malloc(ParticleCount*sizeof(double));
-    	DivergenceP = (double *)malloc(ParticleCount*sizeof(double));
-        PressureP = (double *)malloc(ParticleCount*sizeof(double));
-        VirialPressureAtParticle = (double *)malloc(ParticleCount*sizeof(double));
-    	VirialStressAtParticle = (double (*) [DIM][DIM])malloc(ParticleCount*sizeof(double [DIM][DIM]));
-    	Mass = (double (*))malloc(ParticleCount*sizeof(double));
-        Force = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
-        Mu = (double (*))malloc(ParticleCount*sizeof(double));
-    	Lambda = (double (*))malloc(ParticleCount*sizeof(double));
-    	Kappa = (double (*))malloc(ParticleCount*sizeof(double));
-
-    	NeighborCount  = (int *)malloc(ParticleCount*sizeof(int));
-    	Neighbor       = (int (*)[MAX_NEIGHBOR_COUNT])malloc(ParticleCount*sizeof(int [MAX_NEIGHBOR_COUNT]));
-     	NeighborCalculatedPosition = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
-
-        double (*q)[DIM] = Position;
-        double (*v)[DIM] = Velocity;
-
-        for(int iP=0;iP<ParticleCount;++iP){
-            if(fgets(buf,sizeof(buf),fp)==NULL)break;
-            sscanf(buf,"%d  %lf %lf %lf  %lf %lf %lf",
-                   &Property[iP],
-                   &q[iP][0],&q[iP][1],&q[iP][2],
-                   &v[iP][0],&v[iP][1],&v[iP][2]
-                   );
-        }
-    }catch(...){};
-
-    fclose(fp);
+	char buf[1024];   
+	
+	
+	try{
+		
+		if(fgets(buf,sizeof(buf),fp)==NULL)throw;
+		sscanf(buf,"%lf",&Time);
+		if(fgets(buf,sizeof(buf),fp)==NULL)throw;
+		sscanf(buf,"%d  %lf  %lf %lf %lf  %lf %lf %lf",
+			&ParticleCount,
+			&ParticleSpacing,
+			&DomainMin[0], &DomainMax[0],
+			&DomainMin[1], &DomainMax[1],
+			&DomainMin[2], &DomainMax[2]);
+		#ifdef TWO_DIMENSIONAL
+		ParticleVolume = ParticleSpacing*ParticleSpacing;
+		#else
+		ParticleVolume = ParticleSpacing*ParticleSpacing*ParticleSpacing;
+		#endif
+		
+		Property = (int *)malloc(ParticleCount*sizeof(int));
+		Position = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
+		Velocity = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
+		DensityA = (double *)malloc(ParticleCount*sizeof(double));
+		GravityCenter = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
+		PressureA = (double *)malloc(ParticleCount*sizeof(double));
+		VolStrainP = (double *)malloc(ParticleCount*sizeof(double));
+		DivergenceP = (double *)malloc(ParticleCount*sizeof(double));
+		PressureP = (double *)malloc(ParticleCount*sizeof(double));
+		VirialPressureAtParticle = (double *)malloc(ParticleCount*sizeof(double));
+		VirialStressAtParticle = (double (*) [DIM][DIM])malloc(ParticleCount*sizeof(double [DIM][DIM]));
+		Mass = (double (*))malloc(ParticleCount*sizeof(double));
+		Force = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
+		Mu = (double (*))malloc(ParticleCount*sizeof(double));
+		Lambda = (double (*))malloc(ParticleCount*sizeof(double));
+		Kappa = (double (*))malloc(ParticleCount*sizeof(double));
+		
+		#pragma acc enter data create(Property[0:ParticleCount])               attach(Property)
+		#pragma acc enter data create(Position[0:ParticleCount][0:DIM])        attach(Position)
+		#pragma acc enter data create(Velocity[0:ParticleCount][0:DIM])        attach(Velocity)
+		#pragma acc enter data create(DensityA[0:ParticleCount])               attach(DensityA)
+		#pragma acc enter data create(GravityCenter[0:ParticleCount][0:DIM])   attach(GravityCenter)
+		#pragma acc enter data create(PressureA[0:ParticleCount])              attach(PressureA)
+		#pragma acc enter data create(VolStrainP[0:ParticleCount])             attach(VolStrainP)
+		#pragma acc enter data create(DivergenceP[0:ParticleCount])            attach(DivergenceP)
+		#pragma acc enter data create(PressureP[0:ParticleCount])              attach(PressureP)
+		#pragma acc enter data create(VirialPressureAtParticle[0:ParticleCount])               attach(VirialPressureAtParticle)
+		#pragma acc enter data create(VirialStressAtParticle[0:ParticleCount][0:DIM][0:DIM])   attach(VirialStressAtParticle)
+		#pragma acc enter data create(Mass[0:ParticleCount])                attach(Mass)
+		#pragma acc enter data create(Force[0:ParticleCount][0:DIM])        attach(Force)
+		#pragma acc enter data create(Mu[0:ParticleCount])                  attach(Mu)
+		#pragma acc enter data create(Lambda[0:ParticleCount])              attach(Lambda)
+		#pragma acc enter data create(Kappa[0:ParticleCount])               attach(Kappa)
+		
+		NeighborCount  = (int *)malloc(ParticleCount*sizeof(int));
+		Neighbor       = (int (*)[MAX_NEIGHBOR_COUNT])malloc(ParticleCount*sizeof(int [MAX_NEIGHBOR_COUNT]));
+		NeighborCalculatedPosition = (double (*)[DIM])malloc(ParticleCount*sizeof(double [DIM]));
+		
+		#pragma acc enter data create(NeighborCount[0:ParticleCount]) attach(NeighborCount)
+		#pragma acc enter data create(Neighbor[0:ParticleCount][0:MAX_NEIGHBOR_COUNT]) attach(Neighbor)
+		#pragma acc enter data create(NeighborCalculatedPosition[0:ParticleCount][0:DIM]) attach(NeighborCalculatedPosition)
+		
+		double (*q)[DIM] = Position;
+		double (*v)[DIM] = Velocity;
+		
+		for(int iP=0;iP<ParticleCount;++iP){
+			if(fgets(buf,sizeof(buf),fp)==NULL)break;
+			sscanf(buf,"%d  %lf %lf %lf  %lf %lf %lf",
+				&Property[iP],
+				&q[iP][0],&q[iP][1],&q[iP][2],
+				&v[iP][0],&v[iP][1],&v[iP][2]
+			);
+		}
+	}catch(...){};
+	
+	fclose(fp);
 	
 	// set begin & end
 	FluidParticleBegin=0;FluidParticleEnd=0;WallParticleBegin=0;WallParticleEnd=0;
-    for(int iP=0;iP<ParticleCount;++iP){
-    	if(FLUID_BEGIN<=Property[iP] && Property[iP]<FLUID_END && WALL_BEGIN<=Property[iP+1] && Property[iP+1]<WALL_END){
-    		FluidParticleEnd=iP+1;
-    		WallParticleBegin=iP+1;
-    	}
-    	if(FLUID_BEGIN<=Property[iP] && Property[iP]<FLUID_END && iP+1==ParticleCount){
-    		FluidParticleEnd=iP+1;
-    	}
-    	if(WALL_BEGIN<=Property[iP] && Property[iP]<WALL_END && iP+1==ParticleCount){
-    		WallParticleEnd=iP+1;
-    	}
-    }
+	for(int iP=0;iP<ParticleCount;++iP){
+		if(FLUID_BEGIN<=Property[iP] && Property[iP]<FLUID_END && WALL_BEGIN<=Property[iP+1] && Property[iP+1]<WALL_END){
+			FluidParticleEnd=iP+1;
+			WallParticleBegin=iP+1;
+		}
+		if(FLUID_BEGIN<=Property[iP] && Property[iP]<FLUID_END && iP+1==ParticleCount){
+			FluidParticleEnd=iP+1;
+		}
+		if(WALL_BEGIN<=Property[iP] && Property[iP]<WALL_END && iP+1==ParticleCount){
+			WallParticleEnd=iP+1;
+		}
+	}
 	
-    return;
+	#pragma acc update device(ParticleCount,ParticleSpacing,ParticleVolume,Dt,DomainMin[0:DIM],DomainMax[0:DIM],DomainWidth[0:DIM])
+	#pragma acc update device(Property[0:ParticleCount][0:DIM])
+	#pragma acc update device(Position[0:ParticleCount][0:DIM])
+	#pragma acc update device(Velocity[0:ParticleCount][0:DIM])
+//	#pragma acc update device(FluidParticleBegin,FluidParticleEnd,WallParticleBegin,WallParticleEnd)
+	
 }
 
 static void writeProfFile(char *filename)
@@ -857,7 +893,11 @@ static void initializeWeight()
 #endif
         N0p = sum;
         log_printf("N0p = %e, count=%d\n", N0p, count);
-    }				
+    }
+	
+	#pragma acc update device(RadiusA,RadiusG,RadiusP,RadiusV,Swa,Swg,Swp,Swv,N0a,N0p,R2g)
+	
+
 }
 
 
@@ -888,6 +928,12 @@ static void initializeFluid()
 	for(int iT=0;iT<TYPE_COUNT;++iT){
 		CofA[iT]=SurfaceTension[iT] / ((RadiusG/ParticleSpacing)*(integN+CofK*CofK*integX));
 	}
+	
+	#pragma acc update device(Mass[0:ParticleCount])
+	#pragma acc update device(Kappa[0:ParticleCount])
+	#pragma acc update device(Lambda[0:ParticleCount])
+	#pragma acc update device(Mu[0:ParticleCount])
+	#pragma acc update device(CofK,CofA[0:TYPE_COUNT])
 }
 
 
@@ -930,6 +976,7 @@ static void initializeWall()
 		R[2][2] = -q[0]*q[0]-q[1]*q[1]+q[2]*q[2]+q[3]*q[3];
 		
 	}
+	#pragma acc update device(WallRotation[0:WALL_END][0:DIM][0:DIM])
 }
 
 static void initializeDomain( void )
@@ -964,6 +1011,9 @@ static void initializeDomain( void )
 	
 	CellParticleBegin = (int *)malloc( CellCounts * sizeof(int) );
 	CellParticleEnd   = (int *)malloc( CellCounts * sizeof(int) );
+	#pragma acc enter data create(CellParticleBegin[0:CellCounts]) attach(CellParticleBegin)
+	#pragma acc enter data create(CellParticleEnd  [0:CellCounts]) attach(CellParticleEnd)
+	
 	
 	// calculate minimun PowerParticleCount which sataisfies  ParticleCount < PowerParticleCount = pow(2,ParticleCountPower) 
 	ParticleCountPower=0;  
@@ -974,11 +1024,18 @@ static void initializeDomain( void )
 	fprintf(stderr,"memory for CellIndex and CellParticle %d\n", PowerParticleCount );
 	CellIndex    = (int *)malloc( (PowerParticleCount) * sizeof(int) );
 	CellParticle = (int *)malloc( (PowerParticleCount) * sizeof(int) );
+	#pragma acc enter data create(CellIndex   [0:PowerParticleCount]) attach(CellIndex)
+	#pragma acc enter data create(CellParticle[0:PowerParticleCount]) attach(CellParticle)
 	
 	MaxRadius = ((RadiusA>MaxRadius) ? RadiusA : MaxRadius);
 	MaxRadius = ((RadiusG>MaxRadius) ? RadiusG : MaxRadius);
 	MaxRadius = ((RadiusP>MaxRadius) ? RadiusP : MaxRadius);
 	MaxRadius = ((RadiusV>MaxRadius) ? RadiusV : MaxRadius);
+	
+	#pragma acc update device(CellWidth,CellCount[0:DIM],CellCounts)
+	#pragma acc update device(DomainMax[0:DIM],DomainMin[0:DIM],DomainWidth[0:DIM])
+	#pragma acc update device(ParticleCountPower,PowerParticleCount)
+	#pragma acc update device(MaxRadius)
 }
 
 static int neighborCalculation( void ){
