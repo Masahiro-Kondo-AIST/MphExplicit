@@ -1511,7 +1511,7 @@ static void calculateDivergenceP()
 				}
 				#pragma acc loop seq
 				for(int iD=0;iD<DIM;++iD){
-					DivergenceP[iP] -= uij[iD]*eij[iD]*dw;
+					sum -= uij[iD]*eij[iD]*dw;
 				}
 			}
 		}
