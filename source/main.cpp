@@ -35,7 +35,7 @@ const double DOUBLE_ZERO[32]={0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,
                               0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0};
 
 using namespace std;
-#define TWO_DIMENSIONAL
+// #define TWO_DIMENSIONAL
 
 #define DIM 3
 

@@ -3,7 +3,7 @@
 ```
 //================================================================================================//
 //------------------------------------------------------------------------------------------------//
-//    MPH-I : Moving Particle Hydrodynamics for Incompressible Flows (implicit calculation)       //
+//    MPH-WC : Moving Particle Hydrodynamics for Weakly Compressible  (explicit calculation)      //
 //------------------------------------------------------------------------------------------------//
 //    Developed by    : Masahiro Kondo                                                            //
 //    Distributed in  : 2022                                                                      //
@@ -22,14 +22,14 @@
 ```
 
 This repository contains programs for conducting particle based fluid simulation
-using MPH-I (Moving Particle Hydrodynamics for Incompressible) method. 
+using MPH-WC (Moving Particle Hydrodynamics for Weakly Compressible) method. 
 
 
 # Directories
 The directories in the repository is as follows:  
 
 ```
-MphImplicit ---- generator
+MphExplicit ---- generator
             |--- results
             |--- results3d
             |--- source
@@ -54,13 +54,13 @@ In a case directory, execute
 The generator will be launched and particles will be generated
 reading cubolid file (*.boid).
 
-3."source" contains the main solver for MPH-I calculations. 
+3."source" contains the main solver for MPH-WC calculations. 
 To complie it , run
 
 ```
 > make 
 ```
-in the source directory. Then, an executable "MphImplicit", 
+in the source directory. Then, an executable "MphExplicit", 
 which is for 2D single thread calculation, is created with g++. 
 
 4.Then, back to the case directory, and launch
@@ -81,7 +81,7 @@ and they can be visualized with a viewer like ParaView.
 You may switch the compilation by the targets of "make".
 For 3D single thread calculation with g+;
 ```
-> make MphImplicit_3d
+> make MphExplicit_3d
 ``` 
 For 2D OpenMP calculation with g++;
 ```

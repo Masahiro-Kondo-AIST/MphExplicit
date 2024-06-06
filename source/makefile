@@ -1,5 +1,5 @@
-TARGET          = MphImplicit
-TARGET_3D       = MphImplicit_3d
+TARGET          = MphExplicit
+TARGET_3D       = MphExplicit_3d
 TARGET_GCC      = Mph_gcc
 TARGET_GCC3D    = Mph_gcc3d
 TARGET_ICC      = Mph_icc
